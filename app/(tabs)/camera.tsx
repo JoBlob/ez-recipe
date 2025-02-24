@@ -1,85 +1,86 @@
-import {
-  Button,
-  Image,
-  PermissionsAndroid,
-  StatusBar,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import { useRef, useState } from "react";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { captureRef } from "react-native-view-shot";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import React from "react";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+export default function App() {
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [permission, requestPermission] = useCameraPermissions();
+  const captureViewRef = useRef();
 
-export default function Camera() {
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: "Recipe App camera permission",
-          message: "Promise it's not shady",
-          buttonNeutral: "PROCRASTINATIONNNNN",
-          buttonNegative: "Aww hell no",
-          buttonPositive: "Sure!",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the camera");
-      } else {
-        console.log("Camera permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+  function onCapture() {
+    captureRef(captureViewRef, {
+      format: "jpg",
+      quality: 0.9,
+    }).then(
+      (uri) => alert(uri),
+      (error) => alert(`Oops, snapshot failed ${error}`)
+    );
+  }
+
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
 
   return (
-    <>
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
-          <Text style={styles.item}>Try permissions</Text>
-          <Button
-            title="request permissions"
-            onPress={requestCameraPermission}
-          />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </>
+    <View style={styles.container}>
+      <CameraView ref={captureViewRef} style={styles.camera} facing={facing}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={onCapture}>
+            <Text style={styles.text}>Scan</Text>
+          </TouchableOpacity>
+        </View>
+      </CameraView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
   container: {
     flex: 1,
     justifyContent: "center",
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: "#ecf0f1",
-    padding: 8,
   },
-  item: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: "bold",
+  message: {
     textAlign: "center",
+    paddingBottom: 10,
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 });
