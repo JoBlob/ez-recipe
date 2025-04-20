@@ -1,14 +1,18 @@
-import { useController, UseControllerProps } from "react-hook-form";
+import {
+  useController,
+  UseControllerProps,
+  useFormContext,
+} from "react-hook-form";
 import { TextInput, TextInputProps } from "react-native";
 
 type TextInputPropsBase = Pick<TextInputProps, "style"> &
   Pick<UseControllerProps, "control" | "name">;
 
-const TextInputBase = ({
+export const FormTextInput = ({
   style,
-  control,
   name,
 }: TextInputPropsBase & UseControllerProps) => {
+  const { control } = useFormContext();
   const {
     field: { onBlur, onChange, value },
   } = useController({
