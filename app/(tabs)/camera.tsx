@@ -6,7 +6,7 @@ import { captureRef } from "react-native-view-shot";
 export default function App() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
-  const captureViewRef = useRef();
+  const captureViewRef = useRef(null);
 
   function onCapture() {
     captureRef(captureViewRef, {
@@ -27,10 +27,8 @@ export default function App() {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={styles.message}> Under Construction...</Text>
+        {/* <Button onPress={requestPermission} title="grant permission" /> */}
       </View>
     );
   }
@@ -63,6 +61,7 @@ const styles = StyleSheet.create({
   message: {
     textAlign: "center",
     paddingBottom: 10,
+    color: "white",
   },
   camera: {
     flex: 1,
