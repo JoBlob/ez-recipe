@@ -3,23 +3,22 @@ import { StyleSheet, Image, Platform, TextInputBase } from "react-native";
 import { FieldValues, Form, FormProvider, useForm } from "react-hook-form";
 import { FormTextInput } from "@/components/inputs/inputs";
 
+// @TODO styles
 export default function TabTwoScreen() {
   const methods = useForm();
 
-  // @TODO Form types
+  // @TODO API
   const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={methods.handleSubmit(onSubmit)}>
+      <Form onSubmit={onSubmit}>
         <FormTextInput name="name" />
         <input type="submit" />
       </Form>
     </FormProvider>
   );
 }
-
-// }
 
 const styles = StyleSheet.create({
   headerImage: {
