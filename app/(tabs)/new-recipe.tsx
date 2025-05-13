@@ -1,9 +1,9 @@
-import { StyleSheet, Image, Platform, TextInputBase } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { FieldValues, Form, FormProvider, useForm } from "react-hook-form";
-import { FormTextInput } from "@/components/inputs/inputs";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 
-// @TODO styles
+import { RecipeForm } from "@/components/forms/recipe-form";
+
 export default function TabTwoScreen() {
   const methods = useForm();
 
@@ -12,14 +12,12 @@ export default function TabTwoScreen() {
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={onSubmit}>
-        <FormTextInput name="name" />
-        <input type="submit" />
-      </Form>
+      <RecipeForm onSubmit={onSubmit} />
     </FormProvider>
   );
 }
 
+// @TODO styles
 const styles = StyleSheet.create({
   headerImage: {
     color: "#808080",
