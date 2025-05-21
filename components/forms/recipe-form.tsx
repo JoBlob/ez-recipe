@@ -21,7 +21,6 @@ export function RecipeForm({
 }: {
   onSubmit: (data: FieldValues) => void;
 }) {
-  // move to parent
   const methods = useFormContext<RecipeFormValues>();
 
   const { control } = methods;
