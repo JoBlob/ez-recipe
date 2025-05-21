@@ -29,7 +29,6 @@ export const FormTextInput = ({
       style={style}
       onChangeText={onChange}
       value={value}
-      onChange={onChange}
       onBlur={onBlur}
       className={`${className} ${defaultStyle}`}
     />

@@ -24,6 +24,20 @@ export function ButtonBase({
   );
 }
 
+export function ButtonDefault({
+  onPress,
+  title,
+  accessibilityLabel,
+}: ButtonType) {
+  return (
+    <Button
+      title={title}
+      onPress={onPress}
+      accessibilityLabel={accessibilityLabel}
+    />
+  );
+}
+
 export function ButtonSubmit({
   onPress,
   title,
