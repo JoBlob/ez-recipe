@@ -1,8 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 
 import { RecipeForm } from "@/components/forms/recipe-form";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function TabTwoScreen() {
   const methods = useForm();
@@ -11,22 +12,10 @@ export default function TabTwoScreen() {
   const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
-    <FormProvider {...methods}>
-      <RecipeForm onSubmit={onSubmit} />
-    </FormProvider>
+    <ScrollView className="bg-gray-900">
+      <FormProvider {...methods}>
+        <RecipeForm onSubmit={onSubmit} />
+      </FormProvider>
+    </ScrollView>
   );
 }
-
-// @TODO styles
-const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});
